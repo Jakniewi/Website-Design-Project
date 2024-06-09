@@ -1,5 +1,12 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %}
+{%block links %}
 
+{% endblock %}
 {% block content %}
-<h1>This is the home page</h1>
+<h1>Dostępne Dania:</h1>
+{% for dish in datab %}
+<h2>{{dish.name}}</h2>
+<h5>Cost = {{dish.cost}}PLN &nbsp;&nbsp;&nbsp;&nbsp;Available: {% if dish.sold %}Yes {% else %}No{% endif %} </h5>
+{% endfor %}
+
 {% endblock %}

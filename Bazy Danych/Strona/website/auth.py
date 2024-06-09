@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User
+from .models import User, Dish
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
@@ -31,6 +31,32 @@ def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
+@auth.route('/newdish', methods=['GET','POST'])
+@login_required
+def newdish():
+    if request.method == 'POST':
+        name = request.form.get('dishname')
+        cost = request.form.get('dishcost')
+        sold = request.form.get('dishsold')
+        if sold == 'on':
+            sold = True
+        else:
+            sold = False
+        dish = Dish.query.filter_by(name=name).first()
+        if dish:
+            flash('Dish already exists', category='error')
+        elif len(name) < 4:
+            flash('Email must be longer than 3 characters', category='error')
+        else:
+            new_dish=Dish(name=name, cost = cost, sold = sold)
+            db.session.add(new_dish)
+            db.session.commit()
+            flash('Dish added succesfully', category='success')
+            return redirect(url_for('views.home'))
+        
+
+    return render_template("newdish.html", user=current_user)
+
 @auth.route('/sign-up', methods=['GET','POST'])
 def sign_up():
     if request.method == 'POST':
@@ -49,10 +75,10 @@ def sign_up():
             flash('Password must match', category='error')
         else:
             #add user to db
-            new_user=User(email=email, password=generate_password_hash(password1, method='scrypt'))
+            new_user=User(email=email, password=generate_password_hash(password1, method='scrypt'),admin=False)
             db.session.add(new_user)
             db.session.commit()
-            login_user(user, remember='True')
+            login_user(new_user, remember='True')
             flash('Account created succesfully', category='success')
             return redirect(url_for('views.home'))
     
