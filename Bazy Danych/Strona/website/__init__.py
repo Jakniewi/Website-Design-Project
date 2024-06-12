@@ -2,14 +2,15 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
+from flask_mysqldb import MySql
 db = SQLAlchemy()
-DB_NAME = 'database.db'
+DB_NAME = 'baza.sql'
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret key'
     #app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:HasloMaslo123@localhost/menu'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://root:HasloMaslo123@localhost/menu'
     db.init_app(app)
 
     from .views import views

@@ -19,6 +19,8 @@
 -- Table structure for table `alegen`
 --
 
+-- ALTER USER 'root@localhost' IDENTIFIED BY 'HasloMaslo123';
+
 DROP TABLE IF EXISTS `alegen`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
