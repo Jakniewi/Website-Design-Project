@@ -10,6 +10,6 @@ class User(db.Model, UserMixin):
 class Dish(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), unique=True)
-    cost = db.Column(db.Double)
+    cost = db.Column(db.Integer)
     sold = db.Column(db.Boolean)
     
