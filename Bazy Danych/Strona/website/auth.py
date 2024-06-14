@@ -75,7 +75,7 @@ def sign_up():
             flash('Password must match', category='error')
         else:
             #add user to db
-            new_user=User(email=email, password=generate_password_hash(password1, method='scrypt'),admin=False)
+            new_user=User(email=email, password=generate_password_hash(password1, method='pbkdf2:sha256'),admin=False)
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember='True')
