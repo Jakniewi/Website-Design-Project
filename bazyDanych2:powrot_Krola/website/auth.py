@@ -40,7 +40,7 @@ def sign_up():
             h.update(password.encode())
             passwordHash = h.hexdigest()
 
-            cursor.execute("CALL register(%s,%s,%s,%s)",(email,name,passwordHash,salt))
+            cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,salt,0))
             connection.commit()
 
             session['loggedin'] = True
@@ -106,3 +106,39 @@ def logout():
     session.pop('loggedin',None)
     session.pop('userEmail',None)
     return redirect(url_for('auth.login'))
+
+@auth.route('/createAcc', methods=['GET','POST'])
+def createAcc():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        name = request.form.get('firstName')
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
+        
+        cursor=connection.cursor()
+        cursor.execute("USE menu")
+        cursor.execute("CALL checkIfEmailExists(%s)",email)
+
+        print(cursor.fetchall())
+
+        if cursor.fetchall():
+            flash('User already exists', category='error')
+        elif len(email) < 4:
+            flash('Email must be longer than 3 characters', category='error')
+        elif len(name) <2:
+            flash('First name must be longer than 1 character', category='error')
+        elif password1 != password2:
+            flash('Password must match', category='error')
+        else:
+            salt = str(generate_salt())
+            password = password1 + salt
+            h = hashlib.new("SHA256")
+            h.update(password.encode())
+            passwordHash = h.hexdigest()
+
+            cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,salt,1))
+            connection.commit()
+            
+            flash('Account created succesfully', category='success')
+            return redirect(url_for('views.home'))
+    return render_template("createAcc.html")
