@@ -4,6 +4,7 @@ from . import connection
 import pymysql
 import os
 import hashlib
+import re
 
 auth = Blueprint('auth', __name__)
 
@@ -44,6 +45,8 @@ def sign_up():
 
             session['loggedin'] = True
             session['userEmail'] = email
+            session['isAdmin'] = False
+            session['isOwner'] = False
             
             flash('Account created succesfully', category='success')
             return redirect(url_for('views.home'))
@@ -58,7 +61,8 @@ def login():
         cursor=connection.cursor()
         cursor.execute("USE menu")
         cursor.execute("CALL checkIfEmailExists(%s)",email)
-        if not cursor.fetchall():
+
+        if not int(re.search(r'\d+',str(cursor.fetchone())).group()):
             flash('User don\'t exists', category='error')
         else:
             cursor.execute("CALL login(%s)",email)
@@ -72,7 +76,23 @@ def login():
 
             if cursor.fetchone():
                 session['loggedin'] = True
-                session['userEmail'] = email   
+                session['userEmail'] = email
+
+                cursor.execute("CALL checkPermissions(%s)",email)
+
+                match int(re.search(r'\d+',str(cursor.fetchone())).group()):
+                    case 0:
+                        session['isAdmin'] = False
+                        session['isOwner'] = False
+                    case 1:
+                        session['isAdmin'] = True
+                        session['isOwner'] = False
+                    case 2:
+                        session['isAdmin'] = True
+                        session['isOwner'] = True
+                    case _:
+                        session['isAdmin'] = False  
+                        session['isOwner'] = False
 
                 flash('Logged in successfully', category='success')
                 return redirect(url_for('views.home'))

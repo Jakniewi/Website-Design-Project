@@ -24,9 +24,20 @@
             </button> 
             <div class="collapse navbar-collapse" id="navbar">
                 <div class="navbar-nav">
+                    {% if session["loggedin"]%}
+                    <a class="nav-item nav-link" id="home" href="/">Home</a>
+                    <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+                        {% if session["isAdmin"] %}
+                        <a class="nav-item nav-link" id="newdish" href="/newdish">New Dish</a>
+                            {% if session["isOwner"] %}
+                            <a class="nav-item nav-link" id="createAcc" href="/createAcc">Create Account</a>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
                     <a class="nav-item nav-link" id="home" href="/">Home</a>
                     <a class="nav-item nav-link" id="login" href="/login">Login</a>
                     <a class="nav-item nav-link" id="sign_up" href="/signUp">Sign up</a>
+                    {% endif %}
                 </div>
             </div>
         </nav> 
