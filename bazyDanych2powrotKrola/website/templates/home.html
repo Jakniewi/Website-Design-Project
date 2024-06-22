@@ -25,8 +25,9 @@
             </div>
             <div class="dishtext"> 
                 <div class="dishtext-text">Cena: {{Dish.Price}} PLN</div>
-                <div class="dishtext-rating">Ocena: {{Dish.ratingNum}} &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <div class="dishtext-rating">Ocena: {{Dish.avgRating}} &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                     <form method="POST">
+                        {% if session["loggedin"]%}
                         <div class="rate-padding"></div>
                         <div class="rate">
                             <input type="radio" id="star5_{{Dish.Name}}" name="rate" value="5" onClick="onClick=Rate('{{ Dish.Name }}',5)"/>
@@ -44,6 +45,9 @@
                             <!--<button type="submit" class="btn btn-primary" >Rate</button>-->
                             </div>
                         </div>
+                        {% else %}
+                        SIGN UP OR LOG IN TO RATE THIS DISH!
+                        {% endif %}
                         
                     </form>
                 </div>

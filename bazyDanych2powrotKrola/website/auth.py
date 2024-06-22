@@ -119,8 +119,6 @@ def createAcc():
         cursor.execute("USE menu")
         cursor.execute("CALL checkIfEmailExists(%s)",email)
 
-        print(cursor.fetchall())
-
         if cursor.fetchall():
             flash('User already exists', category='error')
         elif len(email) < 4:
@@ -142,32 +140,3 @@ def createAcc():
             flash('Account created succesfully', category='success')
             return redirect(url_for('views.home'))
     return render_template("createAcc.html")
-
-@auth.route('/newdish', methods=['GET','POST'])
-def newdish():
-    if request.method == 'POST':
-        name = request.form.get('dishname')
-        cost = request.form.get('dishcost')
-        sold = request.form.get('dishsold')
-        if sold == 'on':
-            sold = True
-        else:
-            sold = False
-        cursor=connection.cursor()
-        cursor.execute("USE menu")
-        sql_check = "SELECT * FROM Dish WHERE name = %s"
-        cursor.execute(sql_check, (name,))
-        existing_dish = cursor.fetchone()
-        if existing_dish:
-            flash('Dish already exists', category='error')
-        elif len(name) < 4:
-            flash('Email must be longer than 3 characters', category='error')
-        else:
-            sql_insert = "INSERT INTO Dish (Name, Price, Avalible) VALUES (%s, %s, %s)"
-            cursor.execute(sql_insert, (name, cost, sold))
-            connection.commit()
-            flash('Dish added succesfully', category='success')
-            return redirect(url_for('views.home'))
-        
-
-    return render_template("newdish.html")
