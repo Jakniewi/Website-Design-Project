@@ -1,12 +1,62 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %}
 {%block links %}
-
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+    />
+    <link rel="stylesheet" href="src/styles.css" />
+    <script src="src/app.js"></script>
 {% endblock %}
+
 {% block content %}
-<h1>Dostępne Dania:</h1>
-<!-- {% for dish in datab %}
-<h2>{{dish.name}}</h2>
-<h5>Cost = {{dish.cost}}PLN &nbsp;&nbsp;&nbsp;&nbsp;Available: {% if dish.sold %}Yes {% else %}No{% endif %} </h5>
-{% endfor %} -->
+<section class="Menu">
+    <h1>Dostępne Dania:</h1>
+    {% for Dish in database %}
+    <div class="wrapper">
+        <h2>{{Dish.Name}}</h2>
+        <div class="nextto">
+            <div class="image">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/022/059/000/small/no-image-available-icon-vector.jpg" alt="" height="200" width="200">
+            </div>
+            <div class="dishtext"> 
+                <div class="dishtext-text">Cena: {{Dish.Price}} PLN</div>
+                <div class="dishtext-rating">Ocena: {{Dish.ratingNum}} &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <form method="POST">
+                        <div class="rate-padding"></div>
+                        <div class="rate">
+                            <input type="radio" id="star5_{{Dish.Name}}" name="rate" value="5" onClick="onClick=Rate('{{ Dish.Name }}',5)"/>
+                            <label for="star5_{{Dish.Name}}" title="text">5 stars</label>
+                            <input type="radio" id="star4_{{Dish.Name}}" name="rate" value="4" onClick="onClick=Rate('{{ Dish.Name }}',4)"/>
+                            <label for="star4_{{Dish.Name}}" title="text">4 stars</label>
+                            <input type="radio" id="star3_{{Dish.Name}}" name="rate" value="3" onClick="onClick=Rate('{{ Dish.Name }}',3)"/>
+                            <label for="star3_{{Dish.Name}}" title="text">3 stars</label>
+                            <input type="radio" id="star2_{{Dish.Name}}" name="rate" value="2" onClick="onClick=Rate('{{ Dish.Name }}',2)"/>
+                            <label for="star2_{{Dish.Name}}" title="text">2 stars</label>
+                            <input type="radio" id="star1_{{Dish.Name}}" name="rate" value="1" onClick="onClick=Rate('{{ Dish.Name }}',1)"/>
+                            <label for="star1_{{Dish.Name}}" title="text">1 star</label>
+                            <br>
+                            <div class="ratebtn">
+                            <!--<button type="submit" class="btn btn-primary" >Rate</button>-->
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="dishtext-text">Składniki: {{Dish.Ingredients}}</div>
+                <div class="dishtext-text">Alergeny: {{Dish.Alergens}}</div>
+                
+            </div>  
+        </div>
+    </div>
+    <div class="spacebetween"></div>
+{% endfor %}
+    
+</section>
 
 {% endblock %}
+
