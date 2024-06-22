@@ -15,9 +15,17 @@ def newdish():
         vegan = request.form.get('dishvegan')
         Kosher = request.form.get('dishKosher')
         halal = request.form.get('dishHalal')
-        category = request.form.get('dishCategory')
+        category = request.form.get('category')
         ingredients = request.form.get('dishIngredients')
-        alergens = request.form.get('dishAlergens')
+
+        alergens_list = ['a1','a2','a3','a4','a5','a6', 'a7', 'a8', 'a9', 'a10', 'a11']
+        alergeny=''
+        i=0
+        for node in alergens_list:
+            aler = request.form.get(node)
+            i += 1
+            if aler == 'on':
+                alergeny = alergeny + str(i) +', '
 
         if sold == 'on':
             sold = True
@@ -38,6 +46,7 @@ def newdish():
             halal = True
         else:
             halal = False
+
         cursor=connection.cursor()
         cursor.execute("USE menu")
         cursor.execute("CALL checkIfDishExists(%s)",(name))
@@ -45,7 +54,7 @@ def newdish():
             flash('Dish already exists', category='error')
         else:
             cursor.execute('CALL createNewDish(%s,%s,%s,%s,%s,%s,%s,%s,%s)',
-                           (name,cost,vegan,Kosher,halal,sold,category,ingredients,alergens))
+                           (name,cost,vegan,Kosher,halal,sold,category,ingredients,alergeny))
             connection.commit()
             flash('Dish added succesfully', category='success')
             return redirect(url_for('views.home'))
