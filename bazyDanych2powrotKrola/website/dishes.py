@@ -30,6 +30,7 @@ def newdish():
         halal = request.form.get('dishHalal')
         category = request.form.get('category')
         ingredients = request.form.get('dishIngredients')
+        img = request.form.get('dishimg')
         if not category:
             flash('You must enter a category!', category='error')
         alergens_list = ['a1','a2','a3','a4','a5','a6', 'a7', 'a8', 'a9', 'a10', 'a11']
@@ -67,8 +68,8 @@ def newdish():
         if int(re.search(r'\d+',str(cursor.fetchone())).group()):
             flash('Dish already exists', category='error')
         else:
-            cursor.execute('CALL createNewDish(%s,%s,%s,%s,%s,%s,%s,%s,%s)',
-                           (name,cost,vegan,Kosher,halal,sold,category,ingredients,alergeny))
+            cursor.execute('CALL createNewDish(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+                           (name,cost,vegan,Kosher,halal,sold,category,ingredients,alergeny,img))
             connection.commit()
             flash('Dish added succesfully', category='success')
             return redirect(url_for('views.home'))
@@ -100,6 +101,7 @@ def editDish():
             halal = request.form.get('dishHalal')
             category = request.form.get('category')
             ingredients = request.form.get('dishIngredients')
+            img = request.form.get('dishimg')
             if not category:
                 flash('You must enter a category!', category='error')
             alergens_list = ['a1','a2','a3','a4','a5','a6', 'a7', 'a8', 'a9', 'a10', 'a11']
@@ -134,8 +136,8 @@ def editDish():
             cursor=connection.cursor()
             cursor.execute("USE menu")
             cursor.execute("CALL checkIfDishExists(%s)",(name))
-            cursor.execute('CALL editDish(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
-                           (DishName,name,cost,vegan,Kosher,halal,sold,category,ingredients,alergeny))
+            cursor.execute('CALL editDish(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+                           (DishName,name,cost,vegan,Kosher,halal,sold,category,ingredients,alergeny,img))
             connection.commit()
             flash('Dish edited succesfully', category='success')
             return redirect(url_for('views.home'))
