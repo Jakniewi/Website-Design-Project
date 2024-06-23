@@ -35,18 +35,18 @@
                         <div class="rate-padding"></div>
                         <div class="rate">
                             <input type="radio" id="star5_{{Dish.Name}}" name="rate" value="5" onClick="onClick=Rate('{{ Dish.Name }}',5)"/>
-                            <label for="star5_{{Dish.Name}}" title="text">5 stars</label>
+                            <label for="star5_{{Dish.Name}}" title="5/5">5 stars</label>
                             <input type="radio" id="star4_{{Dish.Name}}" name="rate" value="4" onClick="onClick=Rate('{{ Dish.Name }}',4)"/>
-                            <label for="star4_{{Dish.Name}}" title="text">4 stars</label>
+                            <label for="star4_{{Dish.Name}}" title="4/5">4 stars</label>
                             <input type="radio" id="star3_{{Dish.Name}}" name="rate" value="3" onClick="onClick=Rate('{{ Dish.Name }}',3)"/>
-                            <label for="star3_{{Dish.Name}}" title="text">3 stars</label>
+                            <label for="star3_{{Dish.Name}}" title="3/5">3 stars</label>
                             <input type="radio" id="star2_{{Dish.Name}}" name="rate" value="2" onClick="onClick=Rate('{{ Dish.Name }}',2)"/>
-                            <label for="star2_{{Dish.Name}}" title="text">2 stars</label>
+                            <label for="star2_{{Dish.Name}}" title="2/5">2 stars</label>
                             <input type="radio" id="star1_{{Dish.Name}}" name="rate" value="1" onClick="onClick=Rate('{{ Dish.Name }}',1)"/>
-                            <label for="star1_{{Dish.Name}}" title="text">1 star</label>
+                            <label for="star1_{{Dish.Name}}" title="1/5">1 star</label>
                             <br>
                             <div class="ratebtn">
-                            {% if session["isOwner"] %}
+                            {% if session["isAdmin"] %}
                             <button type="submit" class="btn btn-primary" id="editBtn" name="editBtn" value='{{Dish.Name}}'>Edytuj</button>
                             {% endif %}
                             </div>
