@@ -23,9 +23,9 @@ def sign_up():
         cursor.execute("USE menu")
         cursor.execute("CALL checkIfEmailExists(%s)",email)
 
-        print(cursor.fetchall())
+        # print(cursor.fetchall())
 
-        if cursor.fetchall():
+        if int(re.search(r'\d+',str(cursor.fetchall())).group()):
             flash('User already exists', category='error')
         elif len(email) < 4:
             flash('Email must be longer than 3 characters', category='error')
@@ -34,13 +34,15 @@ def sign_up():
         elif password1 != password2:
             flash('Password must match', category='error')
         else:
-            salt = str(generate_salt())
-            password = password1 + salt
+            # salt = str(generate_salt())
+            # password = password1 + salt
             h = hashlib.new("SHA256")
-            h.update(password.encode())
+            h.update(password1.encode())
             passwordHash = h.hexdigest()
 
-            cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,salt,0))
+            # print(passwordHash)
+
+            cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,'salt',0))
             connection.commit()
 
             session['loggedin'] = True
@@ -65,22 +67,25 @@ def login():
         if not int(re.search(r'\d+',str(cursor.fetchone())).group()):
             flash('User don\'t exists', category='error')
         else:
-            cursor.execute("CALL login(%s)",email)
-            salt = cursor.fetchall()
+            # cursor.execute("CALL login(%s)",email)
+            # salt = cursor.fetchall()
 
-            passwordSalted = str(password) + str(salt)
+            # passwordSalted = str(password) + str(salt)
             h = hashlib.new("SHA256")
-            h.update(passwordSalted.encode())
+            h.update(password.encode())
             passwordHash = h.hexdigest()
             cursor.execute("CALL checkPassword(%s,%s)",(email,passwordHash))
 
-            if cursor.fetchone():
+            # print(passwordHash)
+            #print("idk")
+
+            if int(re.search(r'\d+',str(cursor.fetchall())).group()):
                 session['loggedin'] = True
                 session['userEmail'] = email
 
                 cursor.execute("CALL checkPermissions(%s)",email)
 
-                match int(re.search(r'\d+',str(cursor.fetchone())).group()):
+                match int(re.search(r'\d+',str(cursor.fetchall())).group()):
                     case 0:
                         session['isAdmin'] = False
                         session['isOwner'] = False
@@ -119,7 +124,7 @@ def createAcc():
         cursor.execute("USE menu")
         cursor.execute("CALL checkIfEmailExists(%s)",email)
 
-        if cursor.fetchall():
+        if int(re.search(r'\d+',str(cursor.fetchall())).group()):
             flash('User already exists', category='error')
         elif len(email) < 4:
             flash('Email must be longer than 3 characters', category='error')
@@ -128,10 +133,10 @@ def createAcc():
         elif password1 != password2:
             flash('Password must match', category='error')
         else:
-            salt = str(generate_salt())
-            password = password1 + salt
+            # salt = str(generate_salt())
+            # password = password1 + salt
             h = hashlib.new("SHA256")
-            h.update(password.encode())
+            h.update(password1.encode())
             passwordHash = h.hexdigest()
 
             cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,salt,1))
