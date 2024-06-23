@@ -19,15 +19,10 @@ def home():
     cursor.execute("CALL showDishes()")
     usrs = cursor.fetchall()
     if request.method == 'POST':
-        if session["loggedin"]:
-            rating = request.form.get("dishbutton")
-            flash(rating, category='success')
-        else:
-            flash('You are not logged in', category='error')
-
-    #score = {'value': showRating(dishName)}
-    
-    return render_template("home.html", database=usrs)
+        name = request.form.get('editBtn')
+        return redirect(url_for('dishes.editDish',DishName=name))
+    else:
+        return render_template("home.html", database=usrs)
 
 @views.route('/rate',methods=['POST'])
 def rate_dish():
@@ -40,7 +35,3 @@ def rate_dish():
     cursor.execute("CALL rateDish(%s,%s,%s)", (DishName,session['userEmail'],rating))
     connection.commit()
     return jsonify({})
-
-
-#sql_insert = "INSERT INTO Dish (Name, Price, Avalible) VALUES (%s, %s, %s)"
-           # cursor.execute(sql_insert, (name, cost, sold))

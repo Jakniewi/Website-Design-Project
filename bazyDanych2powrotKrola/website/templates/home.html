@@ -13,6 +13,8 @@
     <script src="src/app.js"></script>
 {% endblock %}
 
+
+
 {% block content %}
 <section class="Menu">
     <h1>Dostępne Dania:</h1>
@@ -42,11 +44,13 @@
                             <label for="star1_{{Dish.Name}}" title="text">1 star</label>
                             <br>
                             <div class="ratebtn">
-                            <!--<button type="submit" class="btn btn-primary" >Rate</button>-->
+                            {% if session["isOwner"] %}
+                            <button type="submit" class="btn btn-primary" id="editBtn" name="editBtn" value='{{Dish.Name}}'>Edytuj</button>
+                            {% endif %}
                             </div>
                         </div>
                         {% else %}
-                        SIGN UP OR LOG IN TO RATE THIS DISH!
+                        Załóż konto lub zaloguj się aby dodać ocenę
                         {% endif %}
                         
                     </form>
