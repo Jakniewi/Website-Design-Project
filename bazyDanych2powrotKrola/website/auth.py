@@ -76,7 +76,7 @@ def login():
             passwordHash = h.hexdigest()
             cursor.execute("CALL checkPassword(%s,%s)",(email,passwordHash))
 
-            # print(passwordHash)
+            print(passwordHash)
             #print("idk")
 
             if int(re.search(r'\d+',str(cursor.fetchall())).group()):
@@ -139,7 +139,7 @@ def createAcc():
             h.update(password1.encode())
             passwordHash = h.hexdigest()
 
-            cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,salt,1))
+            cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,'salt',1))
             connection.commit()
             
             flash('Account created succesfully', category='success')
