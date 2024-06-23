@@ -20,6 +20,7 @@ def decode_allergens(allergen_string):
 
 @dishes.route('/newdish', methods=['GET','POST'])
 def newdish():
+    
     if request.method == 'POST':
         name = request.form.get('dishname')
         cost = request.form.get('dishcost')
@@ -29,7 +30,8 @@ def newdish():
         halal = request.form.get('dishHalal')
         category = request.form.get('category')
         ingredients = request.form.get('dishIngredients')
-
+        if not category:
+            flash('You must enter a category!', category='error')
         alergens_list = ['a1','a2','a3','a4','a5','a6', 'a7', 'a8', 'a9', 'a10', 'a11']
         alergeny=''
         i=0
@@ -70,7 +72,7 @@ def newdish():
             connection.commit()
             flash('Dish added succesfully', category='success')
             return redirect(url_for('views.home'))
-
+    
     return render_template("newdish.html")
 
 @dishes.route('/editDish', methods=['GET','POST'])
@@ -83,53 +85,67 @@ def editDish():
     cursor.execute(sql_select, (DishName))
     result = cursor.fetchone()
     alerg = decode_allergens(result['Alergens'])
-
+    categories = ['Przystawki','Zupy','Dania Główne','Pizza','Dla dzieci','Desery','Napoje']
+    cat_index = categories.index(result['Dish_CategoryName'])
+    cat_list = [False] * 7
+    cat_list[cat_index]= True
     if request.method == 'POST':
-        name = request.form.get('dishname')
-        cost = request.form.get('dishcost')
-        sold = request.form.get('dishsold')
-        vegan = request.form.get('dishvegan')
-        Kosher = request.form.get('dishKosher')
-        halal = request.form.get('dishHalal')
-        category = request.form.get('category')
-        ingredients = request.form.get('dishIngredients')
+        button = request.form.get('button')
+        if button == '1':
+            name = request.form.get('dishname')
+            cost = request.form.get('dishcost')
+            sold = request.form.get('dishsold')
+            vegan = request.form.get('dishvegan')
+            Kosher = request.form.get('dishKosher')
+            halal = request.form.get('dishHalal')
+            category = request.form.get('category')
+            ingredients = request.form.get('dishIngredients')
+            if not category:
+                flash('You must enter a category!', category='error')
+            alergens_list = ['a1','a2','a3','a4','a5','a6', 'a7', 'a8', 'a9', 'a10', 'a11']
+            alergeny=''
+            i=0
+            for node in alergens_list:
+                aler = request.form.get(node)
+                i += 1
+                if aler == 'on':
+                    alergeny = alergeny + str(i) +', '
 
-        alergens_list = ['a1','a2','a3','a4','a5','a6', 'a7', 'a8', 'a9', 'a10', 'a11']
-        alergeny=''
-        i=0
-        for node in alergens_list:
-            aler = request.form.get(node)
-            i += 1
-            if aler == 'on':
-                alergeny = alergeny + str(i) +', '
+            if sold == 'on':
+                sold = True
+            else:
+                sold = False
 
-        if sold == 'on':
-            sold = True
-        else:
-            sold = False
+            if vegan == 'on':
+                vegan = True
+            else:
+                vegan = False
 
-        if vegan == 'on':
-            vegan = True
-        else:
-            vegan = False
+            if Kosher == 'on':
+                Kosher = True
+            else:
+                Kosher = False
 
-        if Kosher == 'on':
-            Kosher = True
-        else:
-            Kosher = False
+            if halal == 'on':
+                halal = True
+            else:
+                halal = False
 
-        if halal == 'on':
-            halal = True
-        else:
-            halal = False
-
-        cursor=connection.cursor()
-        cursor.execute("USE menu")
-        cursor.execute("CALL checkIfDishExists(%s)",(name))
-        cursor.execute('CALL editDish(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+            cursor=connection.cursor()
+            cursor.execute("USE menu")
+            cursor.execute("CALL checkIfDishExists(%s)",(name))
+            cursor.execute('CALL editDish(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
                            (DishName,name,cost,vegan,Kosher,halal,sold,category,ingredients,alergeny))
-        connection.commit()
-        flash('Dish edited succesfully', category='success')
-        return redirect(url_for('views.home'))
+            connection.commit()
+            flash('Dish edited succesfully', category='success')
+            return redirect(url_for('views.home'))
         
-    return render_template("edit.html",Dish=result, Alergeny=alerg)
+        elif button == '2':
+            cursor=connection.cursor()
+            cursor.execute("USE menu")
+            cursor.execute("CALL deleteDish(%s)",(DishName))
+            connection.commit()
+            flash('Dish deleted succesfully', category='success')
+            return redirect(url_for('views.home'))
+    
+    return render_template("edit.html",Dish=result, Alergeny=alerg, Categories=cat_list)

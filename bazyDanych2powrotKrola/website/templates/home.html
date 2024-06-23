@@ -17,10 +17,12 @@
 
 {% block content %}
 <section class="Menu">
-    <h1>Dostępne Dania:</h1>
+    {% for node in Categories %}
+    <h1>{{node}}:</h1>
     {% for Dish in database %}
-    <div class="wrapper">
-        <h2>{{Dish.Name}}</h2>
+    {% if Dish.Dish_CategoryName == node %}
+        <div class="wrapper">
+            <h2>{{Dish.Name}}</h2>
         <div class="nextto">
             <div class="image">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/022/059/000/small/no-image-available-icon-vector.jpg" alt="" height="200" width="200">
@@ -62,8 +64,9 @@
         </div>
     </div>
     <div class="spacebetween"></div>
+    {% endif %}
 {% endfor %}
-    
+{% endfor %}
 </section>
 
 {% endblock %}

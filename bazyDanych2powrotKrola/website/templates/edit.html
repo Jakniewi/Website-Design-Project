@@ -20,19 +20,19 @@
     </div>
     <div class="kategoria">
         <label for="kategoria">Kategoria</label><br>
-        <input type="checkbox" class="radio" id="c1" name="category" value="Przystawki" onCLick="onlyOne(this)">
+        <input type="checkbox" class="radio" id="c1" name="category" value="Przystawki" onCLick="onlyOne(this)" {% if Categories[0] %}checked{% endif %}>
         <label for="vehicle1"> Przystawki</label>
-        <input type="checkbox" class="radio" id="c3" name="category" value="Zupy" onCLick="onlyOne(this)">
+        <input type="checkbox" class="radio" id="c3" name="category" value="Zupy" onCLick="onlyOne(this)" {% if Categories[1] %}checked{% endif %}>
         <label for="vehicle2"> Zupy</label>
-        <input type="checkbox" class="radio" id="c3" name="category" value="Dania główne" onCLick="onlyOne(this)">
+        <input type="checkbox" class="radio" id="c3" name="category" value="Dania Główne" onCLick="onlyOne(this)" {% if Categories[2] %}checked{% endif %}>
         <label for="vehicle2"> Dania główne</label>
-        <input type="checkbox" class="radio" id="c3" name="category" value="Pizze" onCLick="onlyOne(this)">
-        <label for="vehicle2"> Pizze</label>
-        <input type="checkbox" class="radio" id="c5" name="category" value="Dla dzieci" onCLick="onlyOne(this)">
+        <input type="checkbox" class="radio" id="c3" name="category" value="Pizza" onCLick="onlyOne(this)" {% if Categories[3] %}checked{% endif %}>
+        <label for="vehicle2"> Pizza</label>
+        <input type="checkbox" class="radio" id="c5" name="category" value="Dla dzieci" onCLick="onlyOne(this)" {% if Categories[4] %}checked{% endif %}>
         <label for="vehicle2"> Dla dzieci</label>
-        <input type="checkbox" class="radio" id="c4" name="category" value="Desery" onCLick="onlyOne(this)">
+        <input type="checkbox" class="radio" id="c4" name="category" value="Desery" onCLick="onlyOne(this)" {% if Categories[5] %}checked{% endif %}>
         <label for="vehicle2"> Desery</label>
-        <input type="checkbox" class="radio" id="c5" name="category" value="Napoje" onCLick="onlyOne(this)">
+        <input type="checkbox" class="radio" id="c5" name="category" value="Napoje" onCLick="onlyOne(this)" {% if Categories[6] %}checked{% endif %}>
         <label for="vehicle2"> Napoje</label>
         
     </div>
@@ -71,7 +71,8 @@
         <label for="vehicle2"> Halal</label>
     </div>
     <br/>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" name="button" id="button" value="1" class="btn btn-primary">Submit</button>
+    <button type="submit" name="button" id="button" value="2" class="btn btn-danger">Delete</button>
 </form>
 {% endblock %}
 

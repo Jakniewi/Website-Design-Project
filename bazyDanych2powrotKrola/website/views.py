@@ -14,6 +14,7 @@ views = Blueprint('views', __name__)
 
 @views.route('/',methods=['GET','POST'])
 def home():
+    categories = ['Przystawki','Zupy','Dania Główne','Pizza','Dla dzieci','Desery','Napoje']
     cursor=connection.cursor()
     cursor.execute("USE menu")
     cursor.execute("CALL showDishes()")
@@ -22,7 +23,7 @@ def home():
         name = request.form.get('editBtn')
         return redirect(url_for('dishes.editDish',DishName=name))
     else:
-        return render_template("home.html", database=usrs)
+        return render_template("home.html", database=usrs,Categories=categories)
 
 @views.route('/rate',methods=['POST'])
 def rate_dish():
