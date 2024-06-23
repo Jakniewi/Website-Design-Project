@@ -23,6 +23,7 @@
     {% if Dish.Dish_CategoryName == node %}
         <div class="wrapper">
             <h2>{{Dish.Name}}</h2>
+            {% set veg = Dish.Vege %}
         <div class="nextto">
             <div class="image">
                 <img src="{{ Dish.pictureUrl }}" alt="" height="200" width="200">
@@ -59,7 +60,6 @@
                 </div>
                 <div class="dishtext-text">Składniki: {{Dish.Ingredients}}</div>
                 <div class="dishtext-text">Alergeny: {{Dish.Alergens}}</div>
-                
             </div>  
         </div>
     </div>

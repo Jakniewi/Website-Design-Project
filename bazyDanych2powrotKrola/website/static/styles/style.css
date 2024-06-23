@@ -48,7 +48,7 @@ html {
 .dishtext-text{
     float: left;
     width: 50%;
-    height: 70px;
+    height: 60px;
     word-wrap: normal;
     overflow: hidden;
 }

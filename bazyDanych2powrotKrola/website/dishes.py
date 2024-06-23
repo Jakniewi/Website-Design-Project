@@ -25,9 +25,9 @@ def newdish():
         name = request.form.get('dishname')
         cost = request.form.get('dishcost')
         sold = request.form.get('dishsold')
-        vegan = request.form.get('dishvegan')
-        Kosher = request.form.get('dishKosher')
-        halal = request.form.get('dishHalal')
+        vegan = request.form.get('b1')
+        Kosher = request.form.get('b2')
+        halal = request.form.get('b3')
         category = request.form.get('category')
         ingredients = request.form.get('dishIngredients')
         img = request.form.get('dishimg')
@@ -96,9 +96,9 @@ def editDish():
             name = request.form.get('dishname')
             cost = request.form.get('dishcost')
             sold = request.form.get('dishsold')
-            vegan = request.form.get('dishvegan')
-            Kosher = request.form.get('dishKosher')
-            halal = request.form.get('dishHalal')
+            vegan = request.form.get('b1')
+            Kosher = request.form.get('b2')
+            halal = request.form.get('b3')
             category = request.form.get('category')
             ingredients = request.form.get('dishIngredients')
             img = request.form.get('dishimg')
@@ -132,7 +132,7 @@ def editDish():
                 halal = True
             else:
                 halal = False
-
+            print(vegan)
             cursor=connection.cursor()
             cursor.execute("USE menu")
             cursor.execute("CALL checkIfDishExists(%s)",(name))
