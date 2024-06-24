@@ -5,11 +5,14 @@ import pymysql
 import os
 import hashlib
 import re
+import random
+import datetime
 
 auth = Blueprint('auth', __name__)
 
 def generate_salt(length=4):
-    return os.urandom(length)
+    random.seed(datetime.datetime.now())
+    return random.randrange(1000,9999)
 
 @auth.route('/signUp', methods=['GET','POST'])
 def sign_up():
@@ -23,8 +26,6 @@ def sign_up():
         cursor.execute("USE menu")
         cursor.execute("CALL checkIfEmailExists(%s)",email)
 
-        # print(cursor.fetchall())
-
         if int(re.search(r'\d+',str(cursor.fetchall())).group()):
             flash('User already exists', category='error')
         elif len(email) < 4:
@@ -34,15 +35,15 @@ def sign_up():
         elif password1 != password2:
             flash('Password must match', category='error')
         else:
-            # salt = str(generate_salt())
-            # password = password1 + salt
+            salt = str(generate_salt())
+            password = password1 + salt
             h = hashlib.new("SHA256")
-            h.update(password1.encode())
+            h.update(password.encode())
             passwordHash = h.hexdigest()
 
             # print(passwordHash)
 
-            cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,'salt',0))
+            cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,salt,0))
             connection.commit()
 
             session['loggedin'] = True
@@ -67,17 +68,14 @@ def login():
         if not int(re.search(r'\d+',str(cursor.fetchone())).group()):
             flash('User don\'t exists', category='error')
         else:
-            # cursor.execute("CALL login(%s)",email)
-            # salt = cursor.fetchall()
+            cursor.execute("CALL login(%s)",email)
+            salt = int(re.search(r'\d+',str(cursor.fetchall())).group())
 
-            # passwordSalted = str(password) + str(salt)
+            passwordSalted = str(password) + str(salt)
             h = hashlib.new("SHA256")
-            h.update(password.encode())
+            h.update(passwordSalted.encode())
             passwordHash = h.hexdigest()
             cursor.execute("CALL checkPassword(%s,%s)",(email,passwordHash))
-
-            print(passwordHash)
-            #print("idk")
 
             if int(re.search(r'\d+',str(cursor.fetchall())).group()):
                 session['loggedin'] = True
@@ -133,13 +131,13 @@ def createAcc():
         elif password1 != password2:
             flash('Password must match', category='error')
         else:
-            # salt = str(generate_salt())
-            # password = password1 + salt
+            salt = str(generate_salt())
+            password = password1 + salt
             h = hashlib.new("SHA256")
-            h.update(password1.encode())
+            h.update(password.encode())
             passwordHash = h.hexdigest()
 
-            cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,'salt',1))
+            cursor.execute("CALL register(%s,%s,%s,%s,%s)",(email,name,passwordHash,salt,1))
             connection.commit()
             
             flash('Account created succesfully', category='success')
