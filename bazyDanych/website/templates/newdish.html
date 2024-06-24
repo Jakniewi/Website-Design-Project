@@ -1,0 +1,81 @@
+{% extends "base.html" %} {% block title %}New Dish{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <h3 align="center">Add new dish</h3>
+    <div class="form=group">
+        <label for="dishname">Name of dish</label>
+        <input type="text" class="form-control" id="dishname" name="dishname" placeholder="enter name"/>
+    </div>
+    <div class="form=group">
+        <label for="dishcost">The cost</label>
+        <input type="number" class="form-control" id="dishcost" name="dishcost" placeholder="enter the cost"/>
+    </div>
+    <div class="form=group">
+        <label for="dishIngredients">Dish ingredients</label>
+        <input type="text" class="form-control" id="dishIngredients" name="dishIngredients" placeholder="describe the ingredients"/>
+    </div>
+    <div class="form=group">
+        <label for="dishsold">Is the item avalible</label><br/>
+        <input type="checkbox" class="form-control" id="dishsold" name="dishsold"/>
+    </div>
+    <div class="kategoria">
+        <label for="kategoria">Kategoria</label><br>
+        <input type="checkbox" class="radio" id="c1" name="category" value="Przystawki" onCLick="onlyOne(this)">
+        <label for="vehicle1"> Przystawki</label>
+        <input type="checkbox" class="radio" id="c3" name="category" value="Zupy" onCLick="onlyOne(this)">
+        <label for="vehicle2"> Zupy</label>
+        <input type="checkbox" class="radio" id="c3" name="category" value="Dania Główne" onCLick="onlyOne(this)">
+        <label for="vehicle2"> Dania główne</label>
+        <input type="checkbox" class="radio" id="c3" name="category" value="Pizza" onCLick="onlyOne(this)">
+        <label for="vehicle2"> Pizza</label>
+        <input type="checkbox" class="radio" id="c5" name="category" value="Dla dzieci" onCLick="onlyOne(this)">
+        <label for="vehicle2"> Dla dzieci</label>
+        <input type="checkbox" class="radio" id="c4" name="category" value="Desery" onCLick="onlyOne(this)">
+        <label for="vehicle2"> Desery</label>
+        <input type="checkbox" class="radio" id="c5" name="category" value="Napoje" onCLick="onlyOne(this)">
+        <label for="vehicle2"> Napoje</label>
+        
+    </div>
+    <div class="alegee">
+        <label for="alegee">Alergeny</label><br>
+        <input type="checkbox" id="a1" name="a1">
+        <label for="vehicle1"> Pszenica</label>
+        <input type="checkbox" id="a2" name="a2">
+        <label for="vehicle2"> Laktoza</label>
+        <input type="checkbox" id="a3" name="a3">
+        <label for="vehicle3"> Jajka</label>
+        <input type="checkbox" id="a4" name="a4">
+        <label for="vehicle3"> Ryby</label>
+        <input type="checkbox" id="a5" name="a5">
+        <label for="vehicle3"> Skorupiaki</label>
+        <input type="checkbox" id="a6" name="a6">
+        <label for="vehicle3"> Orzechy</label>
+        <input type="checkbox" id="a7" name="a7">
+        <label for="vehicle3"> Soja</label>
+        <input type="checkbox" id="a8" name="a8">
+        <label for="vehicle3"> Mięczaki</label>
+        <input type="checkbox" id="a9" name="a9">
+        <label for="vehicle3"> Sezam</label>
+        <input type="checkbox" id="a10" name="a10">
+        <label for="vehicle3"> Seler</label>
+        <input type="checkbox" id="a11" name="a11">
+        <label for="vehicle3"> Orzechy arachidowe</label>
+    </div>
+    <div class="atrybuty">
+        <label for="atrybuty">Atrybuty</label><br>
+        <input type="checkbox" id="b1" name="b1">
+        <label for="vehicle1"> Vege</label>
+        <input type="checkbox" id="b2" name="b2">
+        <label for="vehicle2"> Koszer</label>
+        <input type="checkbox" id="b3" name="b3">
+        <label for="vehicle2"> Halal</label>
+    </div>
+    <div class="form=group">
+        <label for="dishname">Dish Image</label>
+        <input type="text" class="form-control" id="dishimg" name="dishimg" placeholder="enter url"/>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
